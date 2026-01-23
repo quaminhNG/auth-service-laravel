@@ -122,5 +122,6 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'jwt_secret' =>env('JWT_SECRET','5f622744f0d683ce5c8ace3fff4f954b7038a4f60b0ddb2c338157e75cd28901')
 
 ];
