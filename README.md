@@ -1,59 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  Laravel JWT Authentication API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Hệ thống RESTful API cung cấp giải pháp xác thực bảo mật sử dụng **JSON Web Token (JWT)**. Dự án tập trung vào kiến trúc Backend, bảo mật, và khả năng mở rộng.
 
-## About Laravel
+##  Tính Năng Chính
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* **JWT Authentication:** Đăng nhập/Đăng ký không trạng thái (Stateless).
+* **Secure Refresh Token:** Cơ chế cấp lại Token mới khi Token cũ hết hạn (TTL mặc định: 60 phút) giúp duy trì phiên làm việc an toàn.
+* **Role-Based Access Control:** Middleware phân quyền (Admin/User).
+* **Standardized Responses:** Cấu trúc JSON trả về đồng nhất.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+##  Công Nghệ
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Core:** PHP 8.3, Laravel 12
+* **Security:** tymon/jwt-auth
+* **Database:** MySQL
 
-## Learning Laravel
+##  Cài Đặt (Installation)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1.  **Clone dự án:**
+    ```bash
+    git clone https://github.com/quaminhNG/auth-service-laravel.git
+    cd <project_dir>
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2.  **Cài đặt Dependencies & Môi trường:**
+    ```bash
+    composer install
+    cp .env.example .env
+    php artisan key:generate
+    php artisan jwt:secret
+    ```
 
-## Laravel Sponsors
+3.  **Cấu hình Database & Khởi chạy:**
+    * Tạo database trong MySQL.
+    * Cập nhật thông tin DB trong file `.env`.
+    * Chạy migration và seeder:
+    ```bash
+    php artisan migrate --seed
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4.  **Chạy Server:**
+    ```bash
+    php artisan serve
+    ```
 
-### Premium Partners
+##  API Documentation (Endpoints)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Base URL: `http://127.0.0.1:8000/api/auth`
 
-## Contributing
+| Method | Endpoint    | Mô tả                        | Auth Header?      |
+| :----- | :---------- | :--------------------------- | :---------------- |
+| POST   | `/register` | Đăng ký tài khoản mới        | No                |
+| POST   | `/login`    | Đăng nhập (Nhận Token)       | No                |
+| POST   | `/me`       | Lấy thông tin User hiện tại  | **Yes** (Bearer)  |
+| POST   | `/refresh`  | Gia hạn Token mới            | **Yes** (Bearer)  |
+| POST   | `/logout`   | Đăng xuất (Hủy Token)        | **Yes** (Bearer)  |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Tài khoản Demo (Seeder)
+* **Email:** `admin@example.com`
+* **Password:** `password123`
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+##  Kết Quả Kiểm Thử (Testing)
 
-## Security Vulnerabilities
+Hệ thống được phát triển với độ bao phủ test case đầy đủ cho các luồng xác thực cốt lõi bằng PHPUnit. Dưới đây là thông số pass rate mới nhất (`php artisan test`):
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```text
+   PASS  Tests\Feature\AuthTest
+  ✓ user can register
+  ✓ user can login
+  ✓ user cannot access with wrong role
+  ✓ rate limiting on login
+  ✓ user can refresh token
+  ✓ user can logout
+  ✓ admin can access dashboard
 
-## License
+  Tests:    10 passed (32 assertions)
+  Duration: 2.15s
+```
+![Kết quả kiểm thử](test-results.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+**Author:** Minh Qua (rick)
