@@ -1,5 +1,5 @@
 #  Laravel JWT Authentication API
-
+![Kết quả kiểm thử](test-results.png)
 Hệ thống RESTful API cung cấp giải pháp xác thực bảo mật sử dụng **JSON Web Token (JWT)**. Dự án tập trung vào kiến trúc Backend, bảo mật, và khả năng mở rộng.
 
 ##  Tính Năng Chính
@@ -79,7 +79,7 @@ Hệ thống được phát triển với độ bao phủ test case đầy đủ
   Tests:    10 passed (32 assertions)
   Duration: 2.15s
 ```
-![Kết quả kiểm thử](test-results.png)
+
 
 ---
 **Author:** Minh Qua (rick)
